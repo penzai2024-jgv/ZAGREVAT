@@ -4,16 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ZAGREVAT | Ciencia con alma, tecnología con propósito</title>
-  <meta name="description" content="Ecosistema educativo que integra Inteligencia Artificial, VR y accesibilidad tecnológica para transformar la educación en Colombia.">
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
   <style>
-    /* ===== LIGHT MODE (default) ===== */
+    /* ── TOKENS ─────────────────────────────────── */
     :root {
-      --pink:       #e91e63;
-      --cyan:       #00bcd4;
-      --purple:     #7c3aed;
-      --green:      #10b981;
+      --pink:   #e91e63;
+      --cyan:   #00bcd4;
+      --purple: #7c3aed;
+      --green:  #10b981;
+
+      /* LIGHT */
       --bg:         #ffffff;
       --bg2:        #f8fafc;
       --card:       #ffffff;
@@ -26,21 +27,21 @@
       --shadow:     0 2px 16px rgba(15,23,42,0.07);
     }
 
-    /* ===== DARK MODE ===== */
     [data-theme="dark"] {
       --bg:         #080d18;
       --bg2:        #0f1629;
       --card:       #131c30;
-      --border:     rgba(255,255,255,0.07);
+      --border:     rgba(255,255,255,0.08);
       --text:       #e8edf7;
       --muted:      #7a8aaa;
-      --nav-bg:     rgba(8,13,24,0.82);
-      --nav-border: rgba(255,255,255,0.07);
+      --nav-bg:     rgba(8,13,24,0.85);
+      --nav-border: rgba(255,255,255,0.08);
       --input-bg:   #131c30;
       --shadow:     0 4px 24px rgba(0,0,0,0.4);
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    /* ── RESET ──────────────────────────────────── */
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     html { scroll-behavior: smooth; }
 
     body {
@@ -48,715 +49,986 @@
       background: var(--bg);
       color: var(--text);
       overflow-x: hidden;
-      transition: background 0.3s, color 0.3s;
+      transition: background .3s, color .3s;
+    }
+    body.no-scroll { overflow: hidden; }
+
+    /* ── HELPERS ────────────────────────────────── */
+    .grad {
+      background: linear-gradient(90deg, var(--pink), var(--purple) 50%, var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;
+      font-size: 1.4rem;
     }
 
-    /* ======= NAV ======= */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    /* ── NAV ────────────────────────────────────── */
+    .nav {
+      position: fixed; top:0; left:0; right:0; z-index: 90;
       padding: 1rem 2rem;
       display: flex; align-items: center; justify-content: space-between;
       background: var(--nav-bg);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--nav-border);
-      transition: background 0.3s, border-color 0.3s;
+      transition: background .3s, border-color .3s;
     }
 
     .nav-logo {
       font-family: 'Syne', sans-serif;
-      font-weight: 800; font-size: 1.4rem; letter-spacing: -0.02em;
+      font-weight: 800; font-size: 1.4rem; letter-spacing: -.02em;
       background: linear-gradient(90deg, var(--pink), var(--cyan));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      text-decoration: none;
     }
 
-    .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+    .nav-links {
+      display: flex; gap: 2rem; list-style: none; align-items: center;
+    }
     .nav-links a {
       text-decoration: none; color: var(--muted);
-      font-size: 0.875rem; font-weight: 500; transition: color 0.2s;
+      font-size: .875rem; font-weight: 500; transition: color .2s;
     }
     .nav-links a:hover { color: var(--text); }
     .nav-cta {
       background: linear-gradient(135deg, var(--pink), var(--purple));
-      color: white !important; padding: 0.5rem 1.25rem;
+      color: #fff !important; padding: .5rem 1.25rem;
       border-radius: 100px; font-weight: 600 !important;
     }
 
-    .nav-right { display: flex; align-items: center; gap: 0.75rem; }
+    .nav-right { display: flex; align-items: center; gap: .75rem; }
 
-    .theme-toggle {
+    /* theme toggle */
+    .theme-btn {
       width: 38px; height: 38px; border-radius: 50%;
       border: 1px solid var(--border); background: var(--card);
       color: var(--text); cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1rem; transition: all 0.2s; box-shadow: var(--shadow);
+      font-size: 1rem; transition: transform .2s, background .3s, border-color .3s;
+      box-shadow: var(--shadow);
     }
-    .theme-toggle:hover { transform: scale(1.1); }
+    .theme-btn:hover { transform: scale(1.1); }
+    .theme-btn:focus-visible { outline: 3px solid var(--pink); outline-offset: 2px; }
 
-    .hamburger {
-      display: none; background: none; border: none;
-      color: var(--text); cursor: pointer; font-size: 1.5rem;
+    /* ── HAMBURGER BUTTON ───────────────────────── */
+    .hbtn {
+      display: none;                     /* shown only on mobile via media query */
+      flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 5px;
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      cursor: pointer;
+      padding: 10px;
+      transition: background .2s, border-color .3s;
+    }
+    .hbtn:hover { background: var(--bg2); }
+    .hbtn:focus-visible { outline: 3px solid var(--pink); outline-offset: 2px; }
+
+    .hbar {
+      display: block;
+      width: 20px; height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: transform .35s cubic-bezier(.4,0,.2,1),
+                  opacity .25s ease,
+                  width .3s ease,
+                  background .3s;
+      transform-origin: center;
     }
 
-    /* ======= HERO ======= */
+    /* animated X */
+    .hbtn[aria-expanded="true"] .hbar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hbtn[aria-expanded="true"] .hbar:nth-child(2) { opacity: 0; width: 0; }
+    .hbtn[aria-expanded="true"] .hbar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ── MOBILE MENU OVERLAY ────────────────────── */
+    .mob-menu {
+      position: fixed; inset: 0; z-index: 95;
+      background: var(--bg);          /* ← uses theme var, white in light, dark in dark */
+      color: var(--text);
+      display: flex; flex-direction: column;
+      /* CLOSED state */
+      visibility: hidden;
+      opacity: 0;
+      transform: translateX(100%);
+      transition: transform .4s cubic-bezier(.4,0,.2,1),
+                  opacity .35s ease,
+                  visibility 0s .4s,
+                  background .3s,
+                  color .3s;
+    }
+    .mob-menu.is-open {
+      visibility: visible;
+      opacity: 1;
+      transform: translateX(0);
+      transition: transform .4s cubic-bezier(.4,0,.2,1),
+                  opacity .35s ease,
+                  visibility 0s 0s,
+                  background .3s,
+                  color .3s;
+    }
+
+    /* top bar */
+    .mob-topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .mob-close {
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 1px solid var(--border); background: var(--bg2);
+      color: var(--text); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s, transform .25s;
+    }
+    .mob-close:hover { background: var(--border); transform: rotate(90deg); }
+    .mob-close:focus-visible { outline: 3px solid var(--pink); outline-offset: 2px; }
+    .mob-close svg { width:20px; height:20px; stroke:currentColor; stroke-width:2.5; fill:none; stroke-linecap:round; }
+
+    /* links */
+    .mob-nav {
+      flex: 1; overflow-y: auto;
+      display: flex; flex-direction: column;
+      padding: 1.5rem;
+      gap: 0;
+    }
+
+    .mob-link {
+      display: flex; align-items: center; justify-content: space-between;
+      text-decoration: none;
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.6rem, 6vw, 2.2rem);
+      font-weight: 800;
+      color: var(--text);
+      padding: .75rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: color .2s, padding-left .2s, opacity .35s ease, transform .35s ease;
+      /* entrance animation start */
+      opacity: 0;
+      transform: translateX(28px);
+    }
+    .mob-link:last-child { border-bottom: none; }
+
+    .mob-link:hover      { color: var(--pink); padding-left: .5rem; }
+    .mob-link:hover .mob-arrow { opacity: 1; transform: translateX(4px); }
+    .mob-link:focus-visible { outline: 3px solid var(--pink); outline-offset: 4px; border-radius: 4px; }
+
+    /* active page highlight */
+    .mob-link.is-active  { color: var(--pink); }
+    .mob-link.is-active .mob-arrow { opacity: 1; }
+
+    .mob-arrow {
+      flex-shrink: 0; opacity: 0;
+      transition: opacity .2s, transform .2s;
+    }
+    .mob-arrow svg { width:22px; height:22px; stroke:currentColor; stroke-width:2.5; fill:none; stroke-linecap:round; }
+
+    /* stagger in when open */
+    .mob-menu.is-open .mob-link:nth-child(1) { opacity:1; transform:translateX(0); transition-delay:.08s; }
+    .mob-menu.is-open .mob-link:nth-child(2) { opacity:1; transform:translateX(0); transition-delay:.13s; }
+    .mob-menu.is-open .mob-link:nth-child(3) { opacity:1; transform:translateX(0); transition-delay:.18s; }
+    .mob-menu.is-open .mob-link:nth-child(4) { opacity:1; transform:translateX(0); transition-delay:.23s; }
+    .mob-menu.is-open .mob-link:nth-child(5) { opacity:1; transform:translateX(0); transition-delay:.28s; }
+
+    /* footer inside overlay */
+    .mob-footer {
+      padding: 1.5rem;
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .mob-footer-label {
+      font-size: .7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .18em;
+      color: var(--muted); margin-bottom: 1rem;
+    }
+    .mob-socials { display:flex; gap:.75rem; margin-bottom:1.25rem; }
+    .mob-social {
+      width:44px; height:44px; border-radius:14px;
+      border:1px solid var(--border); background:var(--bg2);
+      display:flex; align-items:center; justify-content:center;
+      color:var(--text); text-decoration:none;
+      transition:background .2s, border-color .2s;
+    }
+    .mob-social:hover { background:var(--border); border-color:var(--pink); }
+    .mob-social:focus-visible { outline:3px solid var(--pink); outline-offset:2px; }
+    .mob-social svg { width:18px; height:18px; stroke:currentColor; stroke-width:2; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+
+    .mob-cta {
+      display:block; width:100%;
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      color:#fff; text-decoration:none;
+      padding:1rem; border-radius:14px;
+      font-family:'Syne',sans-serif; font-weight:700; font-size:1rem;
+      text-align:center;
+      transition: opacity .2s, transform .2s;
+    }
+    .mob-cta:hover { opacity:.9; transform:translateY(-1px); }
+    .mob-cta:focus-visible { outline:3px solid #fff; outline-offset:3px; }
+
+    /* ── HERO ────────────────────────────────────── */
     .hero {
       min-height: 100vh;
       display: flex; align-items: center; justify-content: center;
-      text-align: center; padding: 8rem 1.5rem 4rem;
+      text-align: center;
+      padding: 8rem 1.5rem 4rem;
       position: relative; overflow: hidden;
     }
+    .hero-bg { position:absolute; inset:0; pointer-events:none; }
+    .orb { position:absolute; border-radius:50%; filter:blur(110px); }
 
-    .hero-bg { position: absolute; inset: 0; pointer-events: none; }
+    [data-theme="light"] .orb-1 { width:560px;height:560px;background:#fce4ec;top:-200px;left:-150px;opacity:.85; }
+    [data-theme="light"] .orb-2 { width:460px;height:460px;background:#e0f7fa;bottom:-150px;right:-100px;opacity:.75; }
+    [data-theme="light"] .orb-3 { width:280px;height:280px;background:#ede7f6;top:40%;left:50%;transform:translate(-50%,-50%);opacity:.65; }
 
-    .orb { position: absolute; border-radius: 50%; filter: blur(120px); }
-
-    /* Light orbs */
-    [data-theme="light"] .orb-1 { width:600px;height:600px;background:#fce4ec;top:-200px;left:-200px;opacity:0.9; }
-    [data-theme="light"] .orb-2 { width:500px;height:500px;background:#e0f7fa;bottom:-150px;right:-100px;opacity:0.8; }
-    [data-theme="light"] .orb-3 { width:300px;height:300px;background:#ede7f6;top:40%;left:50%;transform:translate(-50%,-50%);opacity:0.7; }
-
-    /* Dark orbs */
-    [data-theme="dark"] .orb-1 { width:600px;height:600px;background:var(--pink);top:-200px;left:-200px;opacity:0.18; }
-    [data-theme="dark"] .orb-2 { width:500px;height:500px;background:var(--cyan);bottom:-150px;right:-100px;opacity:0.18; }
-    [data-theme="dark"] .orb-3 { width:300px;height:300px;background:var(--purple);top:40%;left:50%;transform:translate(-50%,-50%);opacity:0.18; }
+    [data-theme="dark"]  .orb-1 { width:560px;height:560px;background:var(--pink);top:-200px;left:-150px;opacity:.18; }
+    [data-theme="dark"]  .orb-2 { width:460px;height:460px;background:var(--cyan);bottom:-150px;right:-100px;opacity:.18; }
+    [data-theme="dark"]  .orb-3 { width:280px;height:280px;background:var(--purple);top:40%;left:50%;transform:translate(-50%,-50%);opacity:.16; }
 
     .hero-bg::after {
-      content: ''; position: absolute; inset: 0;
-      background-size: 40px 40px;
+      content:''; position:absolute; inset:0; background-size:40px 40px;
     }
-    [data-theme="light"] .hero-bg::after {
-      background-image: radial-gradient(circle, rgba(15,23,42,0.045) 1px, transparent 1px);
-    }
-    [data-theme="dark"] .hero-bg::after {
-      background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
-    }
+    [data-theme="light"] .hero-bg::after { background-image:radial-gradient(circle,rgba(15,23,42,.045) 1px,transparent 1px); }
+    [data-theme="dark"]  .hero-bg::after { background-image:radial-gradient(circle,rgba(255,255,255,.055) 1px,transparent 1px); }
 
-    .hero-content { position: relative; z-index: 2; max-width: 800px; }
+    .hero-inner { position:relative; z-index:2; max-width:800px; }
 
     .hero-badge {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0.4rem 1rem; border-radius: 100px;
-      font-size: 0.75rem; font-weight: 600;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      margin-bottom: 2rem;
-      animation: fadeUp 0.6s ease both;
+      display:inline-flex; align-items:center; gap:.5rem;
+      padding:.4rem 1rem; border-radius:100px;
+      font-size:.75rem; font-weight:600;
+      letter-spacing:.1em; text-transform:uppercase;
+      margin-bottom:2rem;
+      animation: fadeUp .6s ease both;
     }
-    [data-theme="light"] .hero-badge { background:#fce4ec;border:1px solid #f48fb1;color:#c2185b; }
-    [data-theme="dark"]  .hero-badge { background:rgba(233,30,99,0.12);border:1px solid rgba(233,30,99,0.3);color:#f472b6; }
+    [data-theme="light"] .hero-badge { background:#fce4ec; border:1px solid #f48fb1; color:#c2185b; }
+    [data-theme="dark"]  .hero-badge { background:rgba(233,30,99,.12); border:1px solid rgba(233,30,99,.3); color:#f472b6; }
 
     .hero h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(2.5rem, 7vw, 5.5rem);
-      font-weight: 800; line-height: 1.05; letter-spacing: -0.03em;
-      margin-bottom: 1.5rem;
-      animation: fadeUp 0.6s 0.1s ease both;
+      font-family:'Syne',sans-serif;
+      font-size:clamp(2.4rem,7vw,5.5rem);
+      font-weight:800; line-height:1.05; letter-spacing:-.03em;
+      margin-bottom:1.5rem;
+      animation: fadeUp .6s .1s ease both;
     }
-
-    .grad {
-      background: linear-gradient(90deg, var(--pink) 0%, var(--purple) 40%, var(--cyan) 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-
     .hero p {
-      font-size: 1.15rem; color: var(--muted);
-      max-width: 560px; margin: 0 auto 2.5rem; line-height: 1.7;
-      animation: fadeUp 0.6s 0.2s ease both;
+      font-size:1.15rem; color:var(--muted);
+      max-width:540px; margin:0 auto 2.5rem; line-height:1.7;
+      animation: fadeUp .6s .2s ease both;
     }
-
     .hero-actions {
-      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
-      animation: fadeUp 0.6s 0.3s ease both;
+      display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;
+      animation: fadeUp .6s .3s ease both;
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, var(--pink), var(--purple));
-      color: white; padding: 0.9rem 2rem; border-radius: 100px;
-      font-weight: 600; font-size: 0.95rem; border: none; cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      text-decoration: none; display: inline-block;
+      background:linear-gradient(135deg,var(--pink),var(--purple));
+      color:#fff; padding:.9rem 2rem; border-radius:100px;
+      font-weight:600; font-size:.95rem; border:none; cursor:pointer;
+      transition:transform .2s, box-shadow .2s; text-decoration:none; display:inline-block;
     }
-    [data-theme="light"] .btn-primary { box-shadow: 0 4px 20px rgba(233,30,99,0.25); }
-    [data-theme="dark"]  .btn-primary { box-shadow: 0 0 40px rgba(233,30,99,0.3); }
-    .btn-primary:hover { transform: translateY(-2px); }
+    [data-theme="light"] .btn-primary { box-shadow:0 4px 20px rgba(233,30,99,.25); }
+    [data-theme="dark"]  .btn-primary { box-shadow:0 0 40px rgba(233,30,99,.3); }
+    .btn-primary:hover { transform:translateY(-2px); }
 
     .btn-ghost {
-      color: var(--text); padding: 0.9rem 2rem; border-radius: 100px;
-      font-weight: 500; font-size: 0.95rem;
-      border: 1px solid var(--border); background: var(--card);
-      cursor: pointer; transition: background 0.2s;
-      text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;
+      color:var(--text); padding:.9rem 2rem; border-radius:100px;
+      font-weight:500; font-size:.95rem;
+      border:1px solid var(--border); background:var(--card);
+      cursor:pointer; transition:background .2s;
+      text-decoration:none; display:inline-flex; align-items:center; gap:.5rem;
     }
-    .btn-ghost:hover { background: var(--bg2); }
+    .btn-ghost:hover { background:var(--bg2); }
 
     .stats-bar {
-      display: flex; justify-content: center; gap: 4rem;
-      flex-wrap: wrap; margin-top: 4rem;
-      animation: fadeUp 0.6s 0.4s ease both;
+      display:flex; justify-content:center; gap:4rem; flex-wrap:wrap;
+      margin-top:4rem; animation:fadeUp .6s .4s ease both;
     }
-    .stat-item { text-align: center; }
+    .stat-item { text-align:center; }
     .stat-num {
-      font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800;
-      background: linear-gradient(90deg, var(--pink), var(--cyan));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      font-family:'Syne',sans-serif; font-size:2rem; font-weight:800;
+      background:linear-gradient(90deg,var(--pink),var(--cyan));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
     }
-    .stat-label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.2rem; }
+    .stat-label { font-size:.78rem; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; margin-top:.2rem; }
 
-    /* ======= SECTIONS ======= */
-    section { padding: 6rem 1.5rem; }
-    .section-alt { background: var(--bg2); transition: background 0.3s; }
-    .container { max-width: 1100px; margin: 0 auto; }
+    /* ── SECTIONS ───────────────────────────────── */
+    section { padding:6rem 1.5rem; }
+    .s-alt  { background:var(--bg2); transition:background .3s; }
+    .container { max-width:1100px; margin:0 auto; }
 
-    .section-tag { display: inline-block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--cyan); margin-bottom: 1rem; }
-    .section-title { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 1.25rem; }
-    .section-sub { color: var(--muted); font-size: 1.05rem; line-height: 1.7; max-width: 560px; }
+    .s-tag   { display:inline-block; font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.15em; color:var(--cyan); margin-bottom:1rem; }
+    .s-title { font-family:'Syne',sans-serif; font-size:clamp(1.8rem,4vw,3rem); font-weight:800; letter-spacing:-.02em; margin-bottom:1.25rem; }
+    .s-sub   { color:var(--muted); font-size:1.05rem; line-height:1.7; max-width:560px; }
 
-    /* ======= CARDS ======= */
-    .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+    /* ── CARDS ──────────────────────────────────── */
+    .g4 { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.5rem; margin-top:3rem; }
+    .g3 { display:grid; grid-template-columns:repeat(auto-fit,minmax(290px,1fr)); gap:1.5rem; margin-top:3rem; }
 
     .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 1.5rem; padding: 1.75rem;
-      transition: transform 0.25s, box-shadow 0.25s, background 0.3s, border-color 0.3s;
-      box-shadow: var(--shadow);
-      position: relative; overflow: hidden;
+      background:var(--card); border:1px solid var(--border);
+      border-radius:1.5rem; padding:1.75rem;
+      box-shadow:var(--shadow); position:relative; overflow:hidden;
+      transition:transform .25s, box-shadow .25s, background .3s, border-color .3s;
     }
-
     .card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0;
-      height: 2px; background: linear-gradient(90deg, var(--pink), var(--cyan));
-      opacity: 0; transition: opacity 0.25s;
+      content:''; position:absolute; top:0;left:0;right:0; height:2px;
+      background:linear-gradient(90deg,var(--pink),var(--cyan));
+      opacity:0; transition:opacity .25s;
     }
+    .card:hover { transform:translateY(-4px); }
+    .card:hover::before { opacity:1; }
+    [data-theme="light"] .card:hover { box-shadow:0 12px 40px rgba(15,23,42,.1); }
+    [data-theme="dark"]  .card:hover { box-shadow:0 20px 60px rgba(0,0,0,.35); }
 
-    .card:hover { transform: translateY(-4px); }
-    .card:hover::before { opacity: 1; }
+    .card-col { display:flex; flex-direction:column; }
 
-    [data-theme="light"] .card:hover { box-shadow: 0 12px 40px rgba(15,23,42,0.1); }
-    [data-theme="dark"]  .card:hover { box-shadow: 0 20px 60px rgba(0,0,0,0.35); }
-
-    .card-flex { display: flex; flex-direction: column; }
-
-    .icon-bub {
-      width: 48px; height: 48px; border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 1rem;
+    .ibub {
+      width:48px; height:48px; border-radius:14px;
+      display:flex; align-items:center; justify-content:center; margin-bottom:1rem;
     }
+    .card h3 { font-family:'Syne',sans-serif; font-weight:700; margin-bottom:.5rem; font-size:1.05rem; }
+    .card p  { color:var(--muted); font-size:.875rem; line-height:1.65; }
 
-    .card h3 { font-family: 'Syne', sans-serif; font-weight: 700; margin-bottom: 0.5rem; font-size: 1.05rem; }
-    .card p  { color: var(--muted); font-size: 0.875rem; line-height: 1.65; }
+    .stag  { font-size:.7rem; text-transform:uppercase; letter-spacing:.1em; font-weight:700; margin-bottom:.5rem; }
+    .slink { display:inline-flex; align-items:center; gap:.4rem; font-size:.85rem; font-weight:600; text-decoration:none; margin-top:1rem; transition:gap .2s; }
+    .slink:hover { gap:.7rem; }
 
-    .stag { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 0.5rem; }
+    /* ── WHY ────────────────────────────────────── */
+    .why-wrap { display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center; margin-top:3rem; }
+    .why-list { display:flex; flex-direction:column; gap:1.5rem; }
+    .why-item { display:flex; gap:1rem; align-items:flex-start; }
+    .wdot { width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+    .why-item h4 { font-family:'Syne',sans-serif; font-weight:700; margin-bottom:.25rem; }
+    .why-item p  { color:var(--muted); font-size:.875rem; line-height:1.6; }
 
-    .slink {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      font-size: 0.85rem; font-weight: 600; text-decoration: none;
-      margin-top: 1rem; transition: gap 0.2s;
+    .why-vis {
+      background:var(--card); border:1px solid var(--border);
+      border-radius:2rem; padding:2.5rem;
+      display:flex; flex-direction:column; gap:1.5rem;
+      box-shadow:var(--shadow); transition:background .3s,border-color .3s;
     }
-    .slink:hover { gap: 0.7rem; }
+    .mrow { display:flex; flex-direction:column; gap:.5rem; }
+    .mlbl { display:flex; justify-content:space-between; font-size:.82rem; font-weight:500; }
+    .mlbl span:last-child { color:var(--cyan); font-weight:700; }
+    .mbar { height:6px; background:var(--border); border-radius:100px; overflow:hidden; }
+    .mfill { height:100%; border-radius:100px; background:linear-gradient(90deg,var(--pink),var(--cyan)); width:0; transition:width 1.2s cubic-bezier(.4,0,.2,1); }
+    .qbox { padding:1rem; border-radius:1rem; border:1px solid var(--border); background:var(--bg2); transition:background .3s,border-color .3s; }
+    .qbox p:first-child { font-size:.9rem; font-style:italic; color:var(--muted); line-height:1.6; }
+    .qbox p:last-child  { font-size:.75rem; color:var(--muted); margin-top:.75rem; font-weight:600; }
 
-    /* ======= WHY ======= */
-    .why-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; margin-top: 3rem; }
-
-    .why-list { display: flex; flex-direction: column; gap: 1.5rem; }
-    .why-item { display: flex; gap: 1rem; align-items: flex-start; }
-    .why-dot { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .why-item h4 { font-family: 'Syne', sans-serif; font-weight: 700; margin-bottom: 0.25rem; }
-    .why-item p  { color: var(--muted); font-size: 0.875rem; line-height: 1.6; }
-
-    .why-visual {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 2rem; padding: 2.5rem;
-      display: flex; flex-direction: column; gap: 1.5rem;
-      box-shadow: var(--shadow); transition: background 0.3s, border-color 0.3s;
+    /* ── TEAM ───────────────────────────────────── */
+    .team-card { display:flex; flex-direction:column; align-items:center; text-align:center; }
+    .tav {
+      width:80px;height:80px;border-radius:50%;margin:0 auto 1rem;
+      display:flex;align-items:center;justify-content:center;
+      font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:#fff;
     }
+    .team-card h4 { font-family:'Syne',sans-serif; font-weight:700; margin-bottom:.25rem; }
+    .team-card p  { color:var(--muted); font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; }
+    .rdot { display:inline-block; width:6px;height:6px;border-radius:50%;margin-right:.4rem; }
 
-    .metric-row { display: flex; flex-direction: column; gap: 0.5rem; }
-    .metric-lbl { display: flex; justify-content: space-between; font-size: 0.82rem; font-weight: 500; }
-    .metric-lbl span:last-child { color: var(--cyan); font-weight: 700; }
-    .metric-bar { height: 6px; background: var(--border); border-radius: 100px; overflow: hidden; }
-    .metric-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--pink), var(--cyan)); width: 0; transition: width 1.2s cubic-bezier(0.4,0,0.2,1); }
-
-    .qbox { padding: 1rem; border-radius: 1rem; border: 1px solid var(--border); background: var(--bg2); transition: background 0.3s, border-color 0.3s; }
-    .qbox p:first-child { font-size: 0.9rem; font-style: italic; color: var(--muted); line-height: 1.6; }
-    .qbox p:last-child  { font-size: 0.75rem; color: var(--muted); margin-top: 0.75rem; font-weight: 600; }
-
-    /* ======= TEAM ======= */
-    .team-card { display: flex; flex-direction: column; align-items: center; text-align: center; }
-    .avatar {
-      width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 1rem;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; color: white;
-    }
-    .team-card h4 { font-family: 'Syne', sans-serif; font-weight: 700; margin-bottom: 0.25rem; }
-    .team-card p  { color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; }
-    .rdot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 0.4rem; }
-
-    /* ======= CTA ======= */
-    .cta-sec { text-align: center; position: relative; overflow: hidden; }
-    [data-theme="light"] .cta-sec { background: linear-gradient(135deg, #fce4ec, #ede7f6, #e0f7fa); }
-    [data-theme="dark"]  .cta-sec {
-      background: linear-gradient(135deg, rgba(233,30,99,0.14), rgba(124,58,237,0.14));
-      border-top: 1px solid rgba(255,255,255,0.06);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .cta-orb { position: absolute; border-radius: 50%; filter: blur(100px); pointer-events: none; }
-    [data-theme="dark"] .cta-orb-1 { width:400px;height:400px;background:var(--pink);top:-200px;left:-100px;opacity:0.18; }
-    [data-theme="dark"] .cta-orb-2 { width:400px;height:400px;background:var(--cyan);bottom:-200px;right:-100px;opacity:0.18; }
-    [data-theme="light"] .cta-orb-1, [data-theme="light"] .cta-orb-2 { opacity: 0; }
-
-    .cta-sec .container { position: relative; z-index: 2; }
-    .cta-sec h2 { font-family:'Syne',sans-serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:800;letter-spacing:-0.02em;margin-bottom:1rem; }
-    .cta-sec > .container > p { color:var(--muted);font-size:1.05rem;margin-bottom:2.5rem; }
+    /* ── CTA ────────────────────────────────────── */
+    .cta-sec { text-align:center; position:relative; overflow:hidden; }
+    [data-theme="light"] .cta-sec { background:linear-gradient(135deg,#fce4ec,#ede7f6,#e0f7fa); }
+    [data-theme="dark"]  .cta-sec { background:linear-gradient(135deg,rgba(233,30,99,.14),rgba(124,58,237,.14)); border-top:1px solid rgba(255,255,255,.06); border-bottom:1px solid rgba(255,255,255,.06); }
+    .cta-orb { position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none; }
+    [data-theme="dark"] .cta-orb-1 { width:400px;height:400px;background:var(--pink);top:-200px;left:-100px;opacity:.18; }
+    [data-theme="dark"] .cta-orb-2 { width:400px;height:400px;background:var(--cyan);bottom:-200px;right:-100px;opacity:.18; }
+    [data-theme="light"] .cta-orb-1,[data-theme="light"] .cta-orb-2 { opacity:0; }
+    .cta-sec .container { position:relative;z-index:2; }
+    .cta-sec h2 { font-family:'Syne',sans-serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:800;letter-spacing:-.02em;margin-bottom:1rem; }
+    .cta-sec .sub { color:var(--muted);font-size:1.05rem;margin-bottom:2.5rem; }
     .cta-acts { display:flex;gap:1rem;justify-content:center;flex-wrap:wrap; }
 
-    /* ======= CONTACT ======= */
-    .contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 3rem; }
-    .cform { display: flex; flex-direction: column; gap: 1.25rem; }
-    .ffield { display: flex; flex-direction: column; gap: 0.5rem; }
-    .ffield label { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
-    .ffield input, .ffield select, .ffield textarea {
-      background: var(--input-bg); border: 1px solid var(--border);
-      border-radius: 0.875rem; padding: 0.875rem 1.1rem;
-      color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.925rem;
-      outline: none; transition: border-color 0.2s, background 0.3s;
+    /* ── CONTACT ────────────────────────────────── */
+    .cw { display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-top:3rem; }
+    .cform { display:flex;flex-direction:column;gap:1.25rem; }
+    .ff { display:flex;flex-direction:column;gap:.5rem; }
+    .ff label { font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted); }
+    .ff input,.ff select,.ff textarea {
+      background:var(--input-bg);border:1px solid var(--border);
+      border-radius:.875rem;padding:.875rem 1.1rem;
+      color:var(--text);font-family:'DM Sans',sans-serif;font-size:.925rem;
+      outline:none;transition:border-color .2s,background .3s;
     }
-    .ffield input:focus, .ffield select:focus, .ffield textarea:focus { border-color: var(--pink); }
-    .ffield textarea { resize: vertical; min-height: 120px; }
-
-    .cinfo { display: flex; flex-direction: column; gap: 1.25rem; }
-    .citem {
-      display: flex; gap: 1rem; align-items: flex-start;
-      padding: 1.25rem; background: var(--card); border: 1px solid var(--border);
-      border-radius: 1.25rem; text-decoration: none; color: inherit;
-      transition: border-color 0.2s, background 0.3s; box-shadow: var(--shadow);
-    }
-    .citem:hover { border-color: var(--pink); }
-    .cicon { width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
-    .citem h4 { font-weight:600;margin-bottom:0.2rem; }
-    .citem p  { color:var(--muted);font-size:0.85rem; }
-    .hbox {
+    .ff input:focus,.ff select:focus,.ff textarea:focus { border-color:var(--pink); }
+    .ff textarea { resize:vertical;min-height:120px; }
+    .cinfo { display:flex;flex-direction:column;gap:1.25rem; }
+    .ci {
+      display:flex;gap:1rem;align-items:flex-start;
       padding:1.25rem;background:var(--card);border:1px solid var(--border);
-      border-radius:1.25rem;font-size:0.82rem;color:var(--muted);
-      line-height:1.8;box-shadow:var(--shadow);transition:background 0.3s,border-color 0.3s;
+      border-radius:1.25rem;text-decoration:none;color:inherit;
+      transition:border-color .2s,background .3s;box-shadow:var(--shadow);
     }
+    .ci:hover { border-color:var(--pink); }
+    .cicon { width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+    .ci h4 { font-weight:600;margin-bottom:.2rem; }
+    .ci p  { color:var(--muted);font-size:.85rem; }
+    .hbox  { padding:1.25rem;background:var(--card);border:1px solid var(--border);border-radius:1.25rem;font-size:.82rem;color:var(--muted);line-height:1.8;box-shadow:var(--shadow);transition:background .3s,border-color .3s; }
 
-    /* ======= FOOTER ======= */
-    footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 3rem 1.5rem 2rem; transition: background 0.3s; }
-    .footer-in { max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem; }
-    .fbrand p { color:var(--muted);font-size:0.875rem;line-height:1.7;margin-top:0.75rem;max-width:280px; }
-    .fcol h5  { font-family:'Syne',sans-serif;font-weight:700;font-size:0.875rem;margin-bottom:1.25rem; }
-    .fcol a   { display:block;color:var(--muted);text-decoration:none;font-size:0.875rem;margin-bottom:0.75rem;transition:color 0.2s; }
+    /* ── FOOTER ─────────────────────────────────── */
+    footer { background:var(--bg2);border-top:1px solid var(--border);padding:3rem 1.5rem 2rem;transition:background .3s; }
+    .fin { max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem; }
+    .fbrand p { color:var(--muted);font-size:.875rem;line-height:1.7;margin-top:.75rem;max-width:280px; }
+    .fcol h5 { font-family:'Syne',sans-serif;font-weight:700;font-size:.875rem;margin-bottom:1.25rem; }
+    .fcol a  { display:block;color:var(--muted);text-decoration:none;font-size:.875rem;margin-bottom:.75rem;transition:color .2s; }
     .fcol a:hover { color:var(--text); }
-    .footer-bot { max-width:1100px;margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem; }
-    .footer-bot p { color:var(--muted);font-size:0.8rem; }
+    .fbot { max-width:1100px;margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem; }
+    .fbot p { color:var(--muted);font-size:.8rem; }
 
-    /* ======= ANIMATIONS ======= */
-    @keyframes fadeUp {
-      from { opacity:0;transform:translateY(24px); }
-      to   { opacity:1;transform:translateY(0); }
-    }
-    .reveal { opacity:0;transform:translateY(32px);transition:opacity 0.6s ease,transform 0.6s ease; }
-    .reveal.visible { opacity:1;transform:translateY(0); }
+    /* ── SCROLL REVEAL ──────────────────────────── */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+    .rev { opacity:0;transform:translateY(32px);transition:opacity .6s ease,transform .6s ease; }
+    .rev.in { opacity:1;transform:translateY(0); }
 
-    .material-symbols-outlined { font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;font-size:1.4rem; }
-
-    /* ======= RESPONSIVE ======= */
-    @media (max-width: 768px) {
+    /* ── RESPONSIVE ─────────────────────────────── */
+    @media (max-width:768px) {
       .nav-links { display:none; }
-      .hamburger { display:block; }
-      .why-wrap     { grid-template-columns:1fr; }
-      .why-visual   { order:-1; }
-      .contact-wrap { grid-template-columns:1fr; }
-      .footer-in    { grid-template-columns:1fr;gap:2rem; }
-      .footer-bot   { flex-direction:column;text-align:center; }
-      .stats-bar    { gap:2rem; }
+      .hbtn     { display:flex; }
+      .why-wrap { grid-template-columns:1fr; }
+      .why-vis  { order:-1; }
+      .cw       { grid-template-columns:1fr; }
+      .fin      { grid-template-columns:1fr;gap:2rem; }
+      .fbot     { flex-direction:column;text-align:center; }
+      .stats-bar{ gap:2rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav>
+<!-- ═══ NAV ═══════════════════════════════════════ -->
+<header>
+  <nav class="nav" aria-label="Navegación principal">
     
-    <div class="nav-logo"></div>
-  <div style="display: flex; align-items: center; gap: 0.5rem; margin-right: auto;">
+    <div style="display: flex; align-items: center; gap: 0.5rem; margin-right: auto;">
     <img src="assets/isologotipo.svg" alt="ZAGREVAT" style="width:40px;height:40px">
     <div class="nav-logo">ZAGREVAT</div>
   </div>
-    <ul class="nav-links">
+
+    <ul class="nav-links" role="list">
       <li><a href="#inicio">Inicio</a></li>
       <li><a href="#pilares">Pilares</a></li>
       <li><a href="#servicios">Servicios</a></li>
       <li><a href="#nosotros">Nosotros</a></li>
       <li><a href="#contacto" class="nav-cta">Contactar</a></li>
     </ul>
+
     <div class="nav-right">
-      <button class="theme-toggle" id="themeBtn" aria-label="Cambiar tema">🌙</button>
-      <button class="hamburger" id="hamburger">☰</button>
+      <button class="theme-btn" id="themeBtn" aria-label="Cambiar a modo oscuro">🌙</button>
+
+      <button
+        class="hbtn"
+        id="menuBtn"
+        aria-label="Abrir menú de navegación"
+        aria-expanded="false"
+        aria-controls="mobileMenu"
+        aria-haspopup="dialog"
+      >
+        <span class="hbar" aria-hidden="true"></span>
+        <span class="hbar" aria-hidden="true"></span>
+        <span class="hbar" aria-hidden="true"></span>
+      </button>
     </div>
   </nav>
+</header>
 
-  <!-- HERO -->
-  <section class="hero" id="inicio">
-    <div class="hero-bg">
-      <div class="orb orb-1"></div>
-      <div class="orb orb-2"></div>
-      <div class="orb orb-3"></div>
+<!-- ═══ MOBILE MENU ════════════════════════════════ -->
+<div
+  id="mobileMenu"
+  class="mob-menu"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Menú de navegación"
+  aria-hidden="true"
+>
+  <!-- topbar -->
+  <div class="mob-topbar">
+    <span class="nav-logo" aria-hidden="true">ZAGREVAT</span>
+    <button class="mob-close" id="menuClose" aria-label="Cerrar menú de navegación">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- links -->
+  <nav class="mob-nav" aria-label="Menú móvil">
+    <a class="mob-link is-active" href="#inicio" data-close>
+      Inicio
+      <span class="mob-arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </span>
+    </a>
+    <a class="mob-link" href="#pilares" data-close>
+      Pilares
+      <span class="mob-arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </span>
+    </a>
+    <a class="mob-link" href="#servicios" data-close>
+      Servicios
+      <span class="mob-arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </span>
+    </a>
+    <a class="mob-link" href="#nosotros" data-close>
+      Sobre nosotros
+      <span class="mob-arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </span>
+    </a>
+    <a class="mob-link" href="#contacto" data-close>
+      Contacto
+      <span class="mob-arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </span>
+    </a>
+  </nav>
+
+  <!-- footer socials + CTA -->
+  <div class="mob-footer">
+    <p class="mob-footer-label">Conéctate con nosotros</p>
+    <div class="mob-socials">
+      <a class="mob-social" href="mailto:contacto@zagrevat.com" aria-label="Enviar correo">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+      </a>
+      <a class="mob-social" href="https://wa.me/573000000000" aria-label="Abrir WhatsApp" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      </a>
+      <a class="mob-social" href="#" aria-label="Sitio web">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </a>
     </div>
-    <div class="hero-content">
-      <div class="hero-badge">🇨🇴 EdTech Inclusiva en Colombia</div>
-      <h1>Ciencia con alma,<br><span class="grad">tecnología con propósito</span></h1>
-      <p>Diseñamos la primera arquitectura tecnológica educativa que une la Inteligencia Artificial con el impacto social humano en Colombia.</p>
-      <div class="hero-actions">
-        <a href="#contacto" class="btn-primary">Solicitar demostración</a>
-        <a href="#pilares" class="btn-ghost">
-          Conoce nuestros pilares
-          <span class="material-symbols-outlined" style="font-size:1rem;font-variation-settings:'FILL' 0">arrow_downward</span>
+    <a class="mob-cta" href="#contacto" data-close>Contactar ahora →</a>
+  </div>
+</div>
+
+<!-- ═══ HERO ═══════════════════════════════════════ -->
+<section class="hero" id="inicio">
+  <div class="hero-bg" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-badge">🇨🇴 EdTech Inclusiva en Colombia</div>
+    <h1>Ciencia con alma,<br><span class="grad">tecnología con propósito</span></h1>
+    <p>Diseñamos la primera arquitectura tecnológica educativa que une la Inteligencia Artificial con el impacto social humano en Colombia.</p>
+    <div class="hero-actions">
+      <a href="#contacto" class="btn-primary">Solicitar demostración</a>
+      <a href="#pilares" class="btn-ghost">
+        Conoce nuestros pilares
+        <span class="material-symbols-outlined" style="font-size:1rem;font-variation-settings:'FILL' 0" aria-hidden="true">arrow_downward</span>
+      </a>
+    </div>
+    <div class="stats-bar" aria-label="Estadísticas de impacto">
+      <div class="stat-item"><div class="stat-num">25+</div><div class="stat-label">Instituciones aliadas</div></div>
+      <div class="stat-item"><div class="stat-num">5k+</div><div class="stat-label">Estudiantes impactados</div></div>
+      <div class="stat-item"><div class="stat-num">120+</div><div class="stat-label">Proyectos realizados</div></div>
+      <div class="stat-item"><div class="stat-num">4</div><div class="stat-label">Pilares tecnológicos</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROBLEM ════════════════════════════════════ -->
+<section class="s-alt">
+  <div class="container">
+    <div class="rev">
+      <p class="s-tag">El desafío</p>
+      <h2 class="s-title">La brecha educativa que estamos <span class="grad">resolviendo</span></h2>
+      <p class="s-sub">Colombia enfrenta retos estructurales en educación. ZAGREVAT nació para convertir esas brechas en oportunidades de transformación.</p>
+    </div>
+    <div class="g4">
+      <div class="card rev">
+        <div class="ibub" style="background:rgba(233,30,99,.1)"><span class="material-symbols-outlined" style="color:var(--pink)" aria-hidden="true">devices_off</span></div>
+        <h3>Brecha tecnológica</h3>
+        <p>Muchos colegios no tienen acceso a laboratorios STEM ni herramientas digitales avanzadas.</p>
+      </div>
+      <div class="card rev">
+        <div class="ibub" style="background:rgba(0,188,212,.1)"><span class="material-symbols-outlined" style="color:var(--cyan)" aria-hidden="true">psychology_alt</span></div>
+        <h3>Educación poco adaptativa</h3>
+        <p>Los modelos tradicionales no responden a las dinámicas de los nativos digitales.</p>
+      </div>
+      <div class="card rev">
+        <div class="ibub" style="background:rgba(124,58,237,.1)"><span class="material-symbols-outlined" style="color:var(--purple)" aria-hidden="true">accessibility_new</span></div>
+        <h3>Falta de inclusión</h3>
+        <p>Muchas instituciones no cuentan con tecnologías accesibles para estudiantes con discapacidad.</p>
+      </div>
+      <div class="card rev">
+        <div class="ibub" style="background:rgba(16,185,129,.1)"><span class="material-symbols-outlined" style="color:var(--green)" aria-hidden="true">science</span></div>
+        <h3>Débil formación STEM</h3>
+        <p>Los estudiantes no desarrollan habilidades clave para la economía digital del futuro.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PILLARS ════════════════════════════════════ -->
+<section id="pilares">
+  <div class="container">
+    <div class="rev">
+      <p class="s-tag">Nuestros pilares</p>
+      <h2 class="s-title">El ecosistema educativo <span class="grad">ZAGREVAT</span></h2>
+      <p class="s-sub">Cuatro pilares interdependientes que conforman una arquitectura tecnológica única en Colombia.</p>
+    </div>
+    <div class="g4">
+      <div class="card rev">
+        <div class="ibub" style="background:rgba(233,30,99,.1)"><span class="material-symbols-outlined" style="color:var(--pink)" aria-hidden="true">location_on</span></div>
+        <h3>Zonales de Aprendizaje</h3>
+        <p>Alcance nacional con enfoque en MOOCs y capacitación territorial. Llevamos conocimiento a cada rincón del país.</p>
+      </div>
+      <div class="card rev">
+        <div class="ibub" style="background:rgba(124,58,237,.1)"><span class="material-symbols-outlined" style="color:var(--purple)" aria-hidden="true">smart_toy</span></div>
+        <h3>Gestión Robótica</h3>
+        <p>Bots educativos e Inteligencia Artificial para acompañar el aprendizaje 24/7 y automatizar la gestión pedagógica.</p>
+      </div>
+      <div class="card rev">
+        <div class="ibub" style="background:rgba(0,188,212,.1)"><span class="material-symbols-outlined" style="color:var(--cyan)" aria-hidden="true">view_in_ar</span></div>
+        <h3>Experiencias de Vanguardia</h3>
+        <p>VR/360°, gamificación e inmersión total. Laboratorios STEM virtuales con seguimiento de aprendizaje.</p>
+      </div>
+      <div class="card rev">
+        <div class="ibub" style="background:rgba(16,185,129,.1)"><span class="material-symbols-outlined" style="color:var(--green)" aria-hidden="true">diversity_3</span></div>
+        <h3>Accesibilidad Tecnológica</h3>
+        <p>Educación Especial e Inclusión como propósito de vida. Cumplimos WCAG AA y normativa colombiana.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SERVICES ═══════════════════════════════════ -->
+<section class="s-alt" id="servicios">
+  <div class="container">
+    <div class="rev">
+      <p class="s-tag">Servicios</p>
+      <h2 class="s-title">Soluciones <span class="grad">especializadas</span></h2>
+      <p class="s-sub">Cada servicio está diseñado con rigor pedagógico y tecnología de vanguardia.</p>
+    </div>
+    <div class="g3">
+      <div class="card card-col rev">
+        <div class="stag" style="color:var(--pink)">● Inclusión</div>
+        <h3>Gamificación para Educación Especial</h3>
+        <p style="flex:1">Soluciones de alto impacto social para diversas necesidades de aprendizaje. Rompemos barreras con tecnología basada en el juego.</p>
+        <a href="#contacto" class="slink" style="color:var(--pink)">Más información <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="card card-col rev">
+        <div class="stag" style="color:var(--cyan)">● B2B</div>
+        <h3>MOOCs Instruccionales</h3>
+        <p style="flex:1">Plataformas escalables para instituciones. Diseño instruccional de calidad para capacitación masiva y certificación docente.</p>
+        <a href="#contacto" class="slink" style="color:var(--cyan)">Más información <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="card card-col rev">
+        <div class="stag" style="color:var(--purple)">● Inmersivo</div>
+        <h3>IoT Educativo y VR</h3>
+        <p style="flex:1">Experiencias inmersivas. Entornos 360° e integración de hardware robótico para la investigación científica en las aulas.</p>
+        <a href="#contacto" class="slink" style="color:var(--purple)">Más información <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="card card-col rev">
+        <div class="stag" style="color:var(--green)">● IA</div>
+        <h3>Software a Medida y Bots</h3>
+        <p style="flex:1">Soluciones personalizadas y bots de IA para automatizar la gestión administrativa y pedagógica.</p>
+        <a href="#contacto" class="slink" style="color:var(--green)">Más información <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="card card-col rev">
+        <div class="stag" style="color:var(--pink)">● Consultoría</div>
+        <h3>Transformación Digital</h3>
+        <p style="flex:1">Diagnóstico institucional, diseño de AVA, formación docente y estrategia STEAM integral.</p>
+        <a href="#contacto" class="slink" style="color:var(--pink)">Más información <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="card card-col rev">
+        <div class="stag" style="color:var(--cyan)">● Rural</div>
+        <h3>Conectividad Rural</h3>
+        <p style="flex:1">Tecnologías optimizadas para zonas de baja conectividad, garantizando educación de calidad sin importar la ubicación.</p>
+        <a href="#contacto" class="slink" style="color:var(--cyan)">Más información <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WHY ════════════════════════════════════════ -->
+<section id="nosotros">
+  <div class="container">
+    <div class="rev">
+      <p class="s-tag">¿Por qué ZAGREVAT?</p>
+      <h2 class="s-title">Ciencia con alma, <span class="grad">propósito con impacto</span></h2>
+    </div>
+    <div class="why-wrap">
+      <div class="why-list">
+        <div class="why-item rev">
+          <div class="wdot" style="background:rgba(233,30,99,.1)"><span class="material-symbols-outlined" style="color:var(--pink);font-size:1.1rem" aria-hidden="true">verified_user</span></div>
+          <div><h4>Accesibilidad Primero</h4><p>Cumplimos WCAG AA y las regulaciones colombianas de educación inclusiva en cada producto.</p></div>
+        </div>
+        <div class="why-item rev">
+          <div class="wdot" style="background:rgba(0,188,212,.1)"><span class="material-symbols-outlined" style="color:var(--cyan);font-size:1.1rem" aria-hidden="true">insights</span></div>
+          <div><h4>Basado en Evidencia</h4><p>Analítica avanzada e interoperabilidad con LMS, SCORM/xAPI. Metodologías pedagógicas validadas.</p></div>
+        </div>
+        <div class="why-item rev">
+          <div class="wdot" style="background:rgba(124,58,237,.1)"><span class="material-symbols-outlined" style="color:var(--purple);font-size:1.1rem" aria-hidden="true">location_on</span></div>
+          <div><h4>Presencia Local</h4><p>Soporte especializado en Colombia. Entendemos el contexto y las necesidades del ecosistema educativo.</p></div>
+        </div>
+        <div class="why-item rev">
+          <div class="wdot" style="background:rgba(16,185,129,.1)"><span class="material-symbols-outlined" style="color:var(--green);font-size:1.1rem" aria-hidden="true">favorite</span></div>
+          <div><h4>Visión Humana</h4><p>Priorizamos la dignidad y el potencial humano sobre el algoritmo. Tecnología con alma.</p></div>
+        </div>
+      </div>
+      <div class="why-vis rev" aria-label="Métricas de impacto">
+        <div>
+          <h4 style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:.25rem">Impacto medible</h4>
+          <p style="color:var(--muted);font-size:.82rem">Métricas en instituciones aliadas</p>
+        </div>
+        <div class="mrow">
+          <div class="mlbl"><span>Accesibilidad WCAG</span><span>98%</span></div>
+          <div class="mbar"><div class="mfill" data-w="98" role="progressbar" aria-valuenow="98" aria-valuemin="0" aria-valuemax="100" aria-label="Accesibilidad WCAG 98%"></div></div>
+        </div>
+        <div class="mrow">
+          <div class="mlbl"><span>Satisfacción docente</span><span>94%</span></div>
+          <div class="mbar"><div class="mfill" data-w="94" role="progressbar" aria-valuenow="94" aria-valuemin="0" aria-valuemax="100" aria-label="Satisfacción docente 94%"></div></div>
+        </div>
+        <div class="mrow">
+          <div class="mlbl"><span>Mejora en aprendizaje</span><span>87%</span></div>
+          <div class="mbar"><div class="mfill" data-w="87" role="progressbar" aria-valuenow="87" aria-valuemin="0" aria-valuemax="100" aria-label="Mejora en aprendizaje 87%"></div></div>
+        </div>
+        <div class="mrow">
+          <div class="mlbl"><span>Adopción tecnológica</span><span>91%</span></div>
+          <div class="mbar"><div class="mfill" data-w="91" role="progressbar" aria-valuenow="91" aria-valuemin="0" aria-valuemax="100" aria-label="Adopción tecnológica 91%"></div></div>
+        </div>
+        <div class="qbox">
+          <p>"¿Qué pasaría si la tecnología tuviera un propósito de vida?"</p>
+          <p>— Misión ZAGREVAT</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TEAM ═══════════════════════════════════════ -->
+<section class="s-alt">
+  <div class="container">
+    <div class="rev" style="text-align:center">
+      <p class="s-tag">El equipo</p>
+      <h2 class="s-title">Liderazgo <span class="grad">Humano</span></h2>
+      <p class="s-sub" style="margin:0 auto">Personas apasionadas por la educación y la tecnología con propósito social.</p>
+    </div>
+    <div class="g4">
+      <div class="card team-card rev">
+        <div class="tav" style="background:linear-gradient(135deg,var(--pink),var(--purple))" aria-hidden="true">AG</div>
+        <h4>Andrés Gómez</h4>
+        <p><span class="rdot" style="background:var(--pink)" aria-hidden="true"></span>Director de Innovación</p>
+      </div>
+      <div class="card team-card rev">
+        <div class="tav" style="background:linear-gradient(135deg,var(--cyan),var(--purple))" aria-hidden="true">CR</div>
+        <h4>Carolina Ruiz</h4>
+        <p><span class="rdot" style="background:var(--cyan)" aria-hidden="true"></span>Estratega Pedagógica</p>
+      </div>
+      <div class="card team-card rev">
+        <div class="tav" style="background:linear-gradient(135deg,var(--green),var(--cyan))" aria-hidden="true">MS</div>
+        <h4>Mateo Salazar</h4>
+        <p><span class="rdot" style="background:var(--green)" aria-hidden="true"></span>Ingeniería Accesible</p>
+      </div>
+      <div class="card team-card rev">
+        <div class="tav" style="background:linear-gradient(135deg,var(--purple),var(--pink))" aria-hidden="true">EV</div>
+        <h4>Elena Valbuena</h4>
+        <p><span class="rdot" style="background:var(--purple)" aria-hidden="true"></span>Impacto Social</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ════════════════════════════════════════ -->
+<section class="cta-sec">
+  <div class="cta-orb cta-orb-1" aria-hidden="true"></div>
+  <div class="cta-orb cta-orb-2" aria-hidden="true"></div>
+  <div class="container">
+    <div class="rev">
+      <h2>Transforma tu institución <span class="grad">hoy</span></h2>
+      <p class="sub">Únete a la revolución educativa con tecnología con propósito. Agenda una demostración sin compromiso.</p>
+      <div class="cta-acts">
+        <a href="#contacto" class="btn-primary">Empezar ahora</a>
+        <a href="https://wa.me/573000000000" class="btn-ghost" target="_blank" rel="noopener">💬 WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ════════════════════════════════════ -->
+<section id="contacto">
+  <div class="container">
+    <div class="rev">
+      <p class="s-tag">Contacto</p>
+      <h2 class="s-title">Hablemos de tu <span class="grad">proyecto</span></h2>
+      <p class="s-sub">Escríbenos y te respondemos en menos de 24 horas.</p>
+    </div>
+    <div class="cw">
+      <form class="cform rev" onsubmit="return false" novalidate>
+        <div class="ff"><label for="f-name">Nombre completo</label><input id="f-name" type="text" placeholder="Ej. Juan Pérez" autocomplete="name"></div>
+        <div class="ff"><label for="f-email">Correo electrónico</label><input id="f-email" type="email" placeholder="nombre@institucion.edu.co" autocomplete="email"></div>
+        <div class="ff"><label for="f-inst">Institución</label><input id="f-inst" type="text" placeholder="Nombre de su organización" autocomplete="organization"></div>
+        <div class="ff">
+          <label for="f-subj">Asunto</label>
+          <select id="f-subj">
+            <option value="" disabled selected>Selecciona un motivo</option>
+            <option>Software a la Medida</option>
+            <option>Accesibilidad Tecnológica</option>
+            <option>Gestión Robótica</option>
+            <option>Gamificación</option>
+            <option>MOOCs Instruccionales</option>
+            <option>Otro asunto</option>
+          </select>
+        </div>
+        <div class="ff"><label for="f-msg">Mensaje</label><textarea id="f-msg" placeholder="¿Cómo podemos ayudarte?"></textarea></div>
+        <button type="submit" class="btn-primary" style="width:100%;border:none;padding:1rem;font-size:1rem;cursor:pointer">Enviar mensaje →</button>
+      </form>
+      <div class="cinfo rev">
+        <a class="ci" href="https://wa.me/573000000000" target="_blank" rel="noopener">
+          <div class="cicon" style="background:#25D366" aria-hidden="true">
+            <svg width="22" height="22" fill="white" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          </div>
+          <div><h4>Chat WhatsApp</h4><p>Respuesta rápida e inmediata</p></div>
         </a>
-      </div>
-      <div class="stats-bar">
-        <div class="stat-item"><div class="stat-num">25+</div><div class="stat-label">Instituciones aliadas</div></div>
-        <div class="stat-item"><div class="stat-num">5k+</div><div class="stat-label">Estudiantes impactados</div></div>
-        <div class="stat-item"><div class="stat-num">120+</div><div class="stat-label">Proyectos realizados</div></div>
-        <div class="stat-item"><div class="stat-num">4</div><div class="stat-label">Pilares tecnológicos</div></div>
+        <a class="ci" href="mailto:contacto@zagrevat.com">
+          <div class="cicon" style="background:var(--cyan)" aria-hidden="true"><span class="material-symbols-outlined" style="color:white" aria-hidden="true">mail</span></div>
+          <div><h4>Correo Directo</h4><p>contacto@zagrevat.com</p></div>
+        </a>
+        <div class="ci" style="cursor:default">
+          <div class="cicon" style="background:var(--purple)" aria-hidden="true"><span class="material-symbols-outlined" style="color:white" aria-hidden="true">location_on</span></div>
+          <div><h4>Colombia</h4><p>Sede Principal, Bogotá D.C.</p></div>
+        </div>
+        <div class="hbox">
+          <strong style="color:var(--text)">Horario de atención:</strong><br>
+          Lunes a Viernes: 8:00 AM – 6:00 PM<br>
+          Sábados: 9:00 AM – 1:00 PM<br>
+          <span style="color:var(--green);font-weight:600">● Disponibles en línea ahora</span>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- PROBLEM -->
-  <section class="section-alt">
-    <div class="container">
-      <div class="reveal">
-        <div class="section-tag">El desafío</div>
-        <h2 class="section-title">La brecha educativa que estamos <span class="grad">resolviendo</span></h2>
-        <p class="section-sub">Colombia enfrenta retos estructurales en educación. ZAGREVAT nació para convertir esas brechas en oportunidades de transformación.</p>
-      </div>
-      <div class="grid-4">
-        <div class="card reveal">
-          <div class="icon-bub" style="background:rgba(233,30,99,0.1)"><span class="material-symbols-outlined" style="color:var(--pink)">devices_off</span></div>
-          <h3>Brecha tecnológica</h3>
-          <p>Muchos colegios no tienen acceso a laboratorios STEM ni herramientas digitales avanzadas.</p>
-        </div>
-        <div class="card reveal">
-          <div class="icon-bub" style="background:rgba(0,188,212,0.1)"><span class="material-symbols-outlined" style="color:var(--cyan)">psychology_alt</span></div>
-          <h3>Educación poco adaptativa</h3>
-          <p>Los modelos tradicionales no responden a las dinámicas de aprendizaje de los nativos digitales.</p>
-        </div>
-        <div class="card reveal">
-          <div class="icon-bub" style="background:rgba(124,58,237,0.1)"><span class="material-symbols-outlined" style="color:var(--purple)">accessibility_new</span></div>
-          <h3>Falta de inclusión</h3>
-          <p>Muchas instituciones no cuentan con tecnologías accesibles para estudiantes con discapacidad.</p>
-        </div>
-        <div class="card reveal">
-          <div class="icon-bub" style="background:rgba(16,185,129,0.1)"><span class="material-symbols-outlined" style="color:var(--green)">science</span></div>
-          <h3>Débil formación STEM</h3>
-          <p>Los estudiantes no desarrollan habilidades clave para la economía digital del futuro.</p>
-        </div>
-      </div>
+<!-- ═══ FOOTER ═════════════════════════════════════ -->
+<footer>
+  <div class="fin">
+    <div class="fbrand">
+      <div class="nav-logo" style="font-size:1.2rem">ZAGREVAT</div>
+      <p>Empresa colombiana líder en soluciones tecnológicas educativas inclusivas. Ciencia con alma, tecnología con propósito.</p>
     </div>
-  </section>
+    <div class="fcol">
+      <h5>Compañía</h5>
+      <a href="#nosotros">Sobre nosotros</a>
+      <a href="#pilares">Pilares</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#contacto">Contacto</a>
+    </div>
+    <div class="fcol">
+      <h5>Legal</h5>
+      <a href="#">Privacidad</a>
+      <a href="#">Habeas Data</a>
+      <a href="#">Términos</a>
+      <a href="#">WCAG AA</a>
+    </div>
+  </div>
+  <div class="fbot">
+    <p>© 2024 ZAGREVAT SAS Colombia. Todos los derechos reservados.</p>
+    <p style="letter-spacing:.15em;font-size:.7rem;text-transform:uppercase">🇨🇴 Colombia</p>
+  </div>
+</footer>
 
-  <!-- PILLARS -->
-  <section id="pilares">
-    <div class="container">
-      <div class="reveal">
-        <div class="section-tag">Nuestros pilares</div>
-        <h2 class="section-title">El ecosistema educativo <span class="grad">ZAGREVAT</span></h2>
-        <p class="section-sub">Cuatro pilares interdependientes que conforman una arquitectura tecnológica única en Colombia.</p>
-      </div>
-      <div class="grid-4">
-        <div class="card reveal">
-          <div class="icon-bub" style="background:rgba(233,30,99,0.1)"><span class="material-symbols-outlined" style="color:var(--pink)">location_on</span></div>
-          <h3>Zonales de Aprendizaje</h3>
-          <p>Alcance nacional en Colombia con enfoque en MOOCs y capacitación territorial. Llevamos conocimiento a cada rincón del país.</p>
-        </div>
-        <div class="card reveal">
-          <div class="icon-bub" style="background:rgba(124,58,237,0.1)"><span class="material-symbols-outlined" style="color:var(--purple)">smart_toy</span></div>
-          <h3>Gestión Robótica</h3>
-          <p>Bots educativos e Inteligencia Artificial para acompañar el aprendizaje 24/7 y automatizar la gestión pedagógica.</p>
-        </div>
-        <div class="card reveal">
-          <div class="icon-bub" style="background:rgba(0,188,212,0.1)"><span class="material-symbols-outlined" style="color:var(--cyan)">view_in_ar</span></div>
-          <h3>Experiencias de Vanguardia</h3>
-          <p>VR/360°, gamificación e inmersión total para el aula. Laboratorios STEM virtuales con seguimiento de aprendizaje.</p>
-        </div>
-        <div class="card reveal">
-          <div class="icon-bub" style="background:rgba(16,185,129,0.1)"><span class="material-symbols-outlined" style="color:var(--green)">diversity_3</span></div>
-          <h3>Accesibilidad Tecnológica</h3>
-          <p>Educación Especial e Inclusión como propósito de vida. Cumplimos estándares WCAG AA y la normativa colombiana.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+<script>
+  /* ── THEME ──────────────────────────────────────── */
+  const root     = document.documentElement;
+  const themeBtn = document.getElementById('themeBtn');
 
-  <!-- SERVICES -->
-  <section class="section-alt" id="servicios">
-    <div class="container">
-      <div class="reveal">
-        <div class="section-tag">Servicios</div>
-        <h2 class="section-title">Soluciones <span class="grad">especializadas</span></h2>
-        <p class="section-sub">Cada servicio está diseñado con rigor pedagógico y tecnología de vanguardia para transformar instituciones educativas.</p>
-      </div>
-      <div class="grid-3">
-        <div class="card card-flex reveal">
-          <div class="stag" style="color:var(--pink)">● Inclusión</div>
-          <h3>Gamificación para Educación Especial</h3>
-          <p style="flex:1">Soluciones de alto impacto social diseñadas para diversas necesidades de aprendizaje. Rompemos barreras usando tecnología basada en el juego.</p>
-          <a href="#contacto" class="slink" style="color:var(--pink)">Más información <span class="material-symbols-outlined" style="font-size:0.9rem;font-variation-settings:'FILL' 0">arrow_forward</span></a>
-        </div>
-        <div class="card card-flex reveal">
-          <div class="stag" style="color:var(--cyan)">● B2B</div>
-          <h3>MOOCs Instruccionales</h3>
-          <p style="flex:1">Plataformas B2B escalables para instituciones. Diseño instruccional de alta calidad enfocado en capacitación masiva y certificación docente.</p>
-          <a href="#contacto" class="slink" style="color:var(--cyan)">Más información <span class="material-symbols-outlined" style="font-size:0.9rem;font-variation-settings:'FILL' 0">arrow_forward</span></a>
-        </div>
-        <div class="card card-flex reveal">
-          <div class="stag" style="color:var(--purple)">● Inmersivo</div>
-          <h3>IoT Educativo y VR</h3>
-          <p style="flex:1">Experiencias de aprendizaje inmersivas. Entornos 360° e integración de hardware robótico para la investigación científica en las aulas.</p>
-          <a href="#contacto" class="slink" style="color:var(--purple)">Más información <span class="material-symbols-outlined" style="font-size:0.9rem;font-variation-settings:'FILL' 0">arrow_forward</span></a>
-        </div>
-        <div class="card card-flex reveal">
-          <div class="stag" style="color:var(--green)">● IA</div>
-          <h3>Software a Medida y Bots</h3>
-          <p style="flex:1">Soluciones tecnológicas personalizadas y bots impulsados por IA para automatizar la gestión administrativa y pedagógica.</p>
-          <a href="#contacto" class="slink" style="color:var(--green)">Más información <span class="material-symbols-outlined" style="font-size:0.9rem;font-variation-settings:'FILL' 0">arrow_forward</span></a>
-        </div>
-        <div class="card card-flex reveal">
-          <div class="stag" style="color:var(--pink)">● Consultoría</div>
-          <h3>Transformación Digital</h3>
-          <p style="flex:1">Diagnóstico institucional, diseño de AVA, formación docente y estrategia STEAM integral para su organización.</p>
-          <a href="#contacto" class="slink" style="color:var(--pink)">Más información <span class="material-symbols-outlined" style="font-size:0.9rem;font-variation-settings:'FILL' 0">arrow_forward</span></a>
-        </div>
-        <div class="card card-flex reveal">
-          <div class="stag" style="color:var(--cyan)">● Rural</div>
-          <h3>Conectividad Rural</h3>
-          <p style="flex:1">Tecnologías optimizadas para operar en zonas de baja conectividad, garantizando educación de calidad sin importar la ubicación.</p>
-          <a href="#contacto" class="slink" style="color:var(--cyan)">Más información <span class="material-symbols-outlined" style="font-size:0.9rem;font-variation-settings:'FILL' 0">arrow_forward</span></a>
-        </div>
-      </div>
-    </div>
-  </section>
+  themeBtn.addEventListener('click', () => {
+    const isDark = root.getAttribute('data-theme') === 'dark';
+    root.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    themeBtn.textContent      = isDark ? '🌙' : '☀️';
+    themeBtn.setAttribute('aria-label', isDark ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro');
+  });
 
-  <!-- WHY -->
-  <section id="nosotros">
-    <div class="container">
-      <div class="reveal">
-        <div class="section-tag">¿Por qué ZAGREVAT?</div>
-        <h2 class="section-title">Ciencia con alma, <span class="grad">propósito con impacto</span></h2>
-      </div>
-      <div class="why-wrap">
-        <div class="why-list">
-          <div class="why-item reveal">
-            <div class="why-dot" style="background:rgba(233,30,99,0.1)"><span class="material-symbols-outlined" style="color:var(--pink);font-size:1.1rem">verified_user</span></div>
-            <div><h4>Accesibilidad Primero</h4><p>Cumplimos los estándares WCAG AA y las regulaciones colombianas de educación inclusiva en cada producto que desarrollamos.</p></div>
-          </div>
-          <div class="why-item reveal">
-            <div class="why-dot" style="background:rgba(0,188,212,0.1)"><span class="material-symbols-outlined" style="color:var(--cyan);font-size:1.1rem">insights</span></div>
-            <div><h4>Basado en Evidencia</h4><p>Analítica avanzada e interoperabilidad con LMS, SCORM/xAPI. Cada solución respaldada por metodologías pedagógicas validadas.</p></div>
-          </div>
-          <div class="why-item reveal">
-            <div class="why-dot" style="background:rgba(124,58,237,0.1)"><span class="material-symbols-outlined" style="color:var(--purple);font-size:1.1rem">location_on</span></div>
-            <div><h4>Presencia Local</h4><p>Soporte especializado en Colombia. Entendemos el contexto, la cultura y las necesidades del ecosistema educativo colombiano.</p></div>
-          </div>
-          <div class="why-item reveal">
-            <div class="why-dot" style="background:rgba(16,185,129,0.1)"><span class="material-symbols-outlined" style="color:var(--green);font-size:1.1rem">favorite</span></div>
-            <div><h4>Visión Humana</h4><p>Priorizamos la dignidad y el potencial humano sobre el algoritmo. Tecnología con alma, no solo con datos.</p></div>
-          </div>
-        </div>
-        <div class="why-visual reveal">
-          <div>
-            <h4 style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:0.25rem">Impacto medible</h4>
-            <p style="color:var(--muted);font-size:0.82rem">Métricas en instituciones aliadas</p>
-          </div>
-          <div class="metric-row">
-            <div class="metric-lbl"><span>Accesibilidad WCAG</span><span>98%</span></div>
-            <div class="metric-bar"><div class="metric-fill" data-width="98"></div></div>
-          </div>
-          <div class="metric-row">
-            <div class="metric-lbl"><span>Satisfacción docente</span><span>94%</span></div>
-            <div class="metric-bar"><div class="metric-fill" data-width="94"></div></div>
-          </div>
-          <div class="metric-row">
-            <div class="metric-lbl"><span>Mejora en aprendizaje</span><span>87%</span></div>
-            <div class="metric-bar"><div class="metric-fill" data-width="87"></div></div>
-          </div>
-          <div class="metric-row">
-            <div class="metric-lbl"><span>Adopción tecnológica</span><span>91%</span></div>
-            <div class="metric-bar"><div class="metric-fill" data-width="91"></div></div>
-          </div>
-          <div class="qbox">
-            <p>"¿Qué pasaría si la tecnología tuviera un propósito de vida?"</p>
-            <p>— Misión ZAGREVAT</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  /* ── MOBILE MENU ────────────────────────────────── */
+  const menuBtn   = document.getElementById('menuBtn');
+  const mobMenu   = document.getElementById('mobileMenu');
+  const menuClose = document.getElementById('menuClose');
 
-  <!-- TEAM -->
-  <section class="section-alt">
-    <div class="container">
-      <div class="reveal" style="text-align:center">
-        <div class="section-tag">El equipo</div>
-        <h2 class="section-title">Liderazgo <span class="grad">Humano</span></h2>
-        <p class="section-sub" style="margin:0 auto">Personas apasionadas por la educación y la tecnología con propósito social.</p>
-      </div>
-      <div class="grid-4">
-        <div class="card team-card reveal">
-          <div class="avatar" style="background:linear-gradient(135deg,var(--pink),var(--purple))">LR</div>
-          <h4>Lorena Reyes</h4>
-          <p><span class="rdot" style="background:var(--pink)"></span>Directora de Innovación </p>
-        </div>
-        <div class="card team-card reveal">
-          <div class="avatar" style="background:linear-gradient(135deg,var(--cyan),var(--purple))">CR</div>
-          <h4>Carolina Ruiz</h4>
-          <p><span class="rdot" style="background:var(--cyan)"></span>Estratega Pedagógica</p>
-        </div>
-        <div class="card team-card reveal">
-          <div class="avatar" style="background:linear-gradient(135deg,var(--green),var(--cyan))">JV</div>
-          <h4>Juan Viveros</h4>
-          <p><span class="rdot" style="background:var(--green)"></span>Ingeniería Accesible</p>
-        </div>
-        <div class="card team-card reveal">
-          <div class="avatar" style="background:linear-gradient(135deg,var(--purple),var(--pink))">EV</div>
-          <h4>Elena Valbuena</h4>
-          <p><span class="rdot" style="background:var(--purple)"></span>Impacto Social</p>
-        </div>
-      </div>
-    </div>
-  </section>
+  function focusable() {
+    return [...mobMenu.querySelectorAll('a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"])')];
+  }
 
-  <!-- CTA -->
-  <section class="cta-sec">
-    <div class="cta-orb cta-orb-1"></div>
-    <div class="cta-orb cta-orb-2"></div>
-    <div class="container">
-      <div class="reveal">
-        <h2>Transforma tu institución <span class="grad">hoy</span></h2>
-        <p>Únete a la revolución educativa con tecnología con propósito. Agenda una demostración sin compromiso.</p>
-        <div class="cta-acts">
-          <a href="#contacto" class="btn-primary">Empezar ahora</a>
-          <a href="https://wa.me/573000000000" class="btn-ghost">💬 WhatsApp</a>
-        </div>
-      </div>
-    </div>
-  </section>
+  function openMenu() {
+    mobMenu.classList.add('is-open');
+    mobMenu.setAttribute('aria-hidden', 'false');
+    menuBtn.setAttribute('aria-expanded', 'true');
+    menuBtn.setAttribute('aria-label', 'Cerrar menú de navegación');
+    document.body.classList.add('no-scroll');
+    setTimeout(() => { const f = focusable(); if (f.length) f[0].focus(); }, 420);
+  }
 
-  <!-- CONTACT -->
-  <section id="contacto">
-    <div class="container">
-      <div class="reveal">
-        <div class="section-tag">Contacto</div>
-        <h2 class="section-title">Hablemos de tu <span class="grad">proyecto</span></h2>
-        <p class="section-sub">Estamos aquí para transformar la educación juntos. Escríbenos y te respondemos en menos de 24 horas.</p>
-      </div>
-      <div class="contact-wrap">
-        <form class="cform reveal" onsubmit="return false">
-          <div class="ffield"><label>Nombre completo</label><input type="text" placeholder="Ej. Juan Pérez"></div>
-          <div class="ffield"><label>Correo electrónico</label><input type="email" placeholder="nombre@institucion.edu.co"></div>
-          <div class="ffield"><label>Institución</label><input type="text" placeholder="Nombre de su organización"></div>
-          <div class="ffield">
-            <label>Asunto</label>
-            <select>
-              <option value="" disabled selected>Selecciona un motivo</option>
-              <option>Software a la Medida</option>
-              <option>Accesibilidad Tecnológica</option>
-              <option>Gestión Robótica</option>
-              <option>Gamificación</option>
-              <option>MOOCs Instruccionales</option>
-              <option>Otro asunto</option>
-            </select>
-          </div>
-          <div class="ffield"><label>Mensaje</label><textarea placeholder="¿Cómo podemos ayudarte?"></textarea></div>
-          <button type="submit" class="btn-primary" style="width:100%;border:none;padding:1rem;font-size:1rem">Enviar mensaje →</button>
-        </form>
-        <div class="cinfo reveal">
-          <a class="citem" href="https://wa.me/573000000000">
-            <div class="cicon" style="background:#25D366">
-              <svg width="22" height="22" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-            </div>
-            <div><h4>Chat WhatsApp</h4><p>Respuesta rápida e inmediata</p></div>
-          </a>
-          <a class="citem" href="mailto:contacto@zagrevat.com">
-            <div class="cicon" style="background:var(--cyan)"><span class="material-symbols-outlined" style="color:white">mail</span></div>
-            <div><h4>Correo Directo</h4><p>contacto@zagrevat.com</p></div>
-          </a>
-          <div class="citem" style="cursor:default">
-            <div class="cicon" style="background:var(--purple)"><span class="material-symbols-outlined" style="color:white">location_on</span></div>
-            <div><h4>Colombia</h4><p>Sede Principal, Bogotá D.C.</p></div>
-          </div>
-          <div class="hbox">
-            <strong style="color:var(--text)">Horario de atención:</strong><br>
-            Lunes a Viernes: 8:00 AM – 6:00 PM<br>
-            Sábados: 9:00 AM – 1:00 PM<br>
-            <span style="color:var(--green);font-weight:600">● Disponibles en línea ahora</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  function closeMenu() {
+    mobMenu.classList.remove('is-open');
+    mobMenu.setAttribute('aria-hidden', 'true');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    menuBtn.setAttribute('aria-label', 'Abrir menú de navegación');
+    document.body.classList.remove('no-scroll');
+    menuBtn.focus();
+  }
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-in">
-      <div class="fbrand">
-        <div class="nav-logo" style="font-size:1.2rem">ZAGREVAT</div>
-        <p>Empresa colombiana líder en soluciones tecnológicas educativas inclusivas. Ciencia con alma, tecnología con propósito.</p>
-      </div>
-      <div class="fcol">
-        <h5>Compañía</h5>
-        <a href="#nosotros">Sobre nosotros</a>
-        <a href="#pilares">Pilares</a>
-        <a href="#servicios">Servicios</a>
-        <a href="#contacto">Contacto</a>
-      </div>
-      <div class="fcol">
-        <h5>Legal</h5>
-        <a href="#">Privacidad</a>
-        <a href="#">Habeas Data</a>
-        <a href="#">Términos</a>
-        <a href="#">WCAG AA</a>
-      </div>
-    </div>
-    <div class="footer-bot">
-      <p>© 2024 ZAGREVAT SAS Colombia. Todos los derechos reservados.</p>
-      <p style="letter-spacing:0.15em;font-size:0.7rem;text-transform:uppercase">🇨🇴 Colombia</p>
-    </div>
-  </footer>
+  menuBtn.addEventListener('click', () => mobMenu.classList.contains('is-open') ? closeMenu() : openMenu());
+  menuClose.addEventListener('click', closeMenu);
 
-  <script>
-    /* THEME */
-    const html = document.documentElement;
-    const btn  = document.getElementById('themeBtn');
-    btn.addEventListener('click', () => {
-      const dark = html.getAttribute('data-theme') === 'dark';
-      html.setAttribute('data-theme', dark ? 'light' : 'dark');
-      btn.textContent = dark ? '🌙' : '☀️';
+  // close on any [data-close] link click
+  mobMenu.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', closeMenu));
+
+  // Escape key
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && mobMenu.classList.contains('is-open')) closeMenu(); });
+
+  // Focus trap
+  mobMenu.addEventListener('keydown', e => {
+    if (e.key !== 'Tab') return;
+    const items = focusable();
+    const first = items[0], last = items[items.length - 1];
+    if (e.shiftKey ? document.activeElement === first : document.activeElement === last) {
+      e.preventDefault();
+      (e.shiftKey ? last : first).focus();
+    }
+  });
+
+  /* ── SCROLL REVEAL ──────────────────────────────── */
+  new IntersectionObserver((entries, o) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('in'), i * 80);
+        o.unobserve(e.target);
+      }
     });
+  }, { threshold: .1, rootMargin: '0px 0px -40px 0px' })
+  .observe.bind(null); // trick to avoid re-declaring; real observe below
 
-    /* SCROLL REVEAL */
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach((e, i) => {
-        if (e.isIntersecting) {
-          setTimeout(() => e.target.classList.add('visible'), i * 80);
-          obs.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  const revObs = new IntersectionObserver((entries, o) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('in'), i * 80);
+        o.unobserve(e.target);
+      }
+    });
+  }, { threshold: .1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.rev').forEach(el => revObs.observe(el));
 
-    /* METRIC BARS */
-    const barObs = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.style.width = e.target.dataset.width + '%';
-          barObs.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.5 });
-    document.querySelectorAll('.metric-fill').forEach(b => barObs.observe(b));
-  </script>
+  /* ── METRIC BARS ────────────────────────────────── */
+  const barObs = new IntersectionObserver((entries, o) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.width = e.target.dataset.w + '%';
+        o.unobserve(e.target);
+      }
+    });
+  }, { threshold: .5 });
+  document.querySelectorAll('.mfill').forEach(b => barObs.observe(b));
+</script>
 </body>
 </html>
