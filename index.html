@@ -7,12 +7,16 @@
   <meta name="description" content="Ecosistema educativo que integra Inteligencia Artificial, VR y accesibilidad tecnológica para transformar la educación en Colombia.">
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Inter', sans-serif;
       background: #f8fafc;
     }
-
+    
+    sticky {
+      background-color: black;
+    }
     .gradient {
       background: linear-gradient(135deg, #d81b7a, #00bcd4);
     }
@@ -39,11 +43,15 @@
   </style>
 </head>
 <body class="text-slate-900">
-  <nav class="sticky top-0 bg-white/95 backdrop-blur border-b border-slate-100 z-50">
-    <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-      <h1 class="font-bold text-xl tracking-tight">ZAGREVAT</h1>
-      <a href="#contacto" class="hidden md:inline-block text-sm font-semibold text-slate-700 hover:text-slate-900">Contáctanos</a>
-      <button aria-label="Abrir menú" class="md:hidden text-slate-700">☰</button>
+  <nav class="sticky top-0 bg-black backdrop-blur border-b border-gray-800 z-50">
+    <div class="header max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <img src="./assets/Isologotipo.svg" alt="ZAGREVAT logo" class="h-8 w-8">
+        <h1 class="font-bold text-xl tracking-tight text-white">ZAGREVAT</h1>
+      </div>
+      
+      <a href="#contacto" class="hidden md:inline-block text-sm font-semibold text-white hover:text-gray-300">Contáctanos</a>
+      <button aria-label="Abrir menú" class="md:hidden text-white"><span class="material-symbols-outlined text-3xl">menu</span></button>
     </div>
   </nav>
 
