@@ -43,19 +43,9 @@
   </style>
 </head>
 <body class="text-slate-900">
-  <nav class="sticky top-0 bg-black backdrop-blur border-b border-gray-800 z-50">
-    <div class="header max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-      <div class="flex items-center gap-3">
-        <img src="./assets/Isologotipo.svg" alt="ZAGREVAT logo" class="h-8 w-8">
-        <h1 class="font-bold text-xl tracking-tight text-white">ZAGREVAT</h1>
-      </div>
-      
-      <a href="#contacto" class="hidden md:inline-block text-sm font-semibold text-white hover:text-gray-300">Contáctanos</a>
-      <button aria-label="Abrir menú" class="md:hidden text-white"><span class="material-symbols-outlined text-3xl">menu</span></button>
-    </div>
-  </nav>
+  <zag-menu></zag-menu>
 
-  <header class="max-w-6xl mx-auto px-6 py-16 text-center">
+  <header id="inicio" class="max-w-6xl mx-auto px-6 py-16 text-center">
     <p class="uppercase tracking-[0.2em] text-xs text-slate-500 mb-4">EdTech Colombia</p>
     <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-6">
       Ciencia con alma,<br>
@@ -93,7 +83,7 @@
     </div>
   </section>
 
-  <section class="py-16">
+  <section id="ecosistema" class="py-16">
     <div class="max-w-6xl mx-auto px-6">
       <h2 class="text-2xl font-bold mb-12 text-center">El ecosistema educativo ZAGREVAT</h2>
       <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -117,7 +107,7 @@
     </div>
   </section>
 
-  <section class="bg-slate-50 py-16">
+  <section id="servicios" class="bg-slate-50 py-16">
     <div class="max-w-6xl mx-auto px-6">
       <h2 class="text-2xl font-bold mb-10 text-center">Servicios especializados</h2>
       <div class="grid md:grid-cols-3 gap-6">
@@ -137,7 +127,7 @@
     </div>
   </section>
 
-  <section class="py-16 text-center">
+  <section id="impacto" class="py-16 text-center">
     <div class="max-w-4xl mx-auto px-6">
       <h2 class="text-2xl font-bold mb-6">Impacto educativo</h2>
       <p class="text-slate-600 mb-8">ZAGREVAT impulsa el desarrollo científico, tecnológico e inclusivo en las instituciones educativas del país.</p>
@@ -167,5 +157,6 @@
   <footer class="bg-slate-900 text-slate-400 text-center py-10">
     <p class="text-sm">© 2026 ZAGREVAT — Tecnología educativa inclusiva</p>
   </footer>
+  <script type="module" src="./components.menu.js"></script>
 </body>
 </html>
