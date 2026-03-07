@@ -6,8 +6,8 @@
   <title>ZAGREVAT | Ciencia con alma, tecnología con propósito | Sync dev-master</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/styles.css">
-
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/a11y-widget.css">
 </head>
 <body>
 
@@ -16,9 +16,9 @@
   <nav class="nav" aria-label="Navegación principal">
     
     <div style="display: flex; align-items: center; gap: 0.5rem; margin-right: auto;">
-    <img src="assets/isologotipo.svg" alt="ZAGREVAT" style="width:40px;height:40px">
-    <div class="nav-logo">ZAGREVAT</div>
-  </div>
+      <img src="assets/isologotipo.svg" alt="ZAGREVAT" style="width:40px;height:40px">
+      <div class="nav-logo">ZAGREVAT</div>
+    </div>
 
     <ul class="nav-links" role="list">
       <li><a href="#inicio">Inicio</a></li>
@@ -448,7 +448,260 @@
   </div>
 </footer>
 
+<!-- ══════════════════════════════════════════════════
+     LIVE REGION — anuncios para lectores de pantalla
+     ══════════════════════════════════════════════════ -->
+<div
+  id="a11y-announce"
+  role="status"
+  aria-live="polite"
+  aria-atomic="true"
+  style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+         overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0"
+></div>
+
+<!-- ══════════════════════════════════════════════════
+     WIDGET DE ACCESIBILIDAD ZAGREVAT
+     ══════════════════════════════════════════════════ -->
+
+<!-- Línea guía de lectura (se muestra solo cuando la función está activa) -->
+<div class="aw-reading-line" id="awReadingLine" aria-hidden="true"></div>
+
+<!-- Botón flotante trigger -->
+<button
+  class="aw-trigger"
+  id="awTrigger"
+  aria-label="Abrir menú de accesibilidad"
+  aria-expanded="false"
+  aria-controls="awPanel"
+  aria-haspopup="dialog"
+  title="Opciones de accesibilidad"
+>
+  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <circle cx="12" cy="4.5" r="2" fill="white"/>
+    <path d="M6.5 9.5C6.5 9.5 8.5 8.5 12 8.5s5.5 1 5.5 1M12 10.5v4.5M12 15l-3 4.5M12 15l3 4.5"
+      stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </svg>
+</button>
+
+<!-- Panel del widget -->
+<div
+  id="awPanel"
+  class="aw-panel"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="awPanelTitle"
+  aria-hidden="true"
+>
+  <!-- Cabecera -->
+  <div class="aw-header">
+    <h2 class="aw-header-title" id="awPanelTitle">
+      <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="4.5" r="2"/>
+        <path d="M6.5 9.5s2-1 5.5-1 5.5 1 5.5 1M12 10.5v4.5m0 0-3 4.5m3-4.5 3 4.5"/>
+      </svg>
+      Menú de Accesibilidad
+    </h2>
+    <button class="aw-header-close" id="awClose" aria-label="Cerrar menú de accesibilidad">
+      <svg viewBox="0 0 14 14" aria-hidden="true">
+        <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+          d="m2 2 10 10M12 2 2 12"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Cuerpo scrollable -->
+  <div class="aw-body">
+
+    <!-- ── Control tamaño de texto (ancho completo) ── -->
+    <div class="aw-font-row" role="group" aria-label="Tamaño de texto">
+      <span class="aw-font-label">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M4 20h4m0 0L12 4l4 16m-8 0h8m0 0h4"/>
+        </svg>
+        Tamaño de texto
+      </span>
+      <div class="aw-font-controls">
+        <button class="aw-fs-btn" id="awFsDown" aria-label="Reducir tamaño de texto">−</button>
+        <span class="aw-fs-val" id="awFsVal" aria-live="polite" aria-atomic="true">100%</span>
+        <button class="aw-fs-btn" id="awFsUp"   aria-label="Aumentar tamaño de texto">+</button>
+      </div>
+    </div>
+
+    <!-- ── Grid de funciones ── -->
+    <div class="aw-grid" role="group" aria-label="Opciones de visualización y lectura">
+
+      <button class="aw-feat" id="awContrast" role="switch" aria-checked="false"
+        aria-label="Contraste alto: desactivado">
+        <span class="aw-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M12 3v18M12 12H3" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="aw-name">Contraste +</span>
+        <span class="aw-dots" aria-hidden="true"><i></i><i></i></span>
+      </button>
+
+      <button class="aw-feat" id="awInvert" role="switch" aria-checked="false"
+        aria-label="Invertir colores: desactivado">
+        <span class="aw-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2v20M2 12h20" stroke-linecap="round"/>
+            <path d="M12 2a10 10 0 0 1 0 20z" fill="currentColor" stroke="none"/>
+          </svg>
+        </span>
+        <span class="aw-name">Invertir colores</span>
+        <span class="aw-dots" aria-hidden="true"><i></i></span>
+      </button>
+
+      <button class="aw-feat" id="awLinks" role="switch" aria-checked="false"
+        aria-label="Resaltar enlaces: desactivado">
+        <span class="aw-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71
+                     M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+          </svg>
+        </span>
+        <span class="aw-name">Resaltar enlaces</span>
+        <span class="aw-dots" aria-hidden="true"><i></i></span>
+      </button>
+
+      <button class="aw-feat" id="awDyslexia" role="switch" aria-checked="false"
+        aria-label="Fuente para dislexia: desactivada">
+        <span class="aw-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M4 7h16M4 12h10M4 17h13"/>
+          </svg>
+        </span>
+        <span class="aw-name">Apto dislexia</span>
+        <span class="aw-dots" aria-hidden="true"><i></i><i></i></span>
+      </button>
+
+      <button class="aw-feat" id="awNoAnim" role="switch" aria-checked="false"
+        aria-label="Detener animaciones: desactivado">
+        <span class="aw-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <rect x="6" y="4" width="4" height="16"/>
+            <rect x="14" y="4" width="4" height="16"/>
+          </svg>
+        </span>
+        <span class="aw-name">Sin animaciones</span>
+        <span class="aw-dots" aria-hidden="true"><i></i></span>
+      </button>
+
+      <button class="aw-feat" id="awCursor" role="switch" aria-checked="false"
+        aria-label="Cursor grande: desactivado">
+        <span class="aw-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 3l14 9-7 1-4 7z"/>
+          </svg>
+        </span>
+        <span class="aw-name">Cursor grande</span>
+        <span class="aw-dots" aria-hidden="true"><i></i><i></i></span>
+      </button>
+
+      <button class="aw-feat" id="awSpacing" role="switch" aria-checked="false"
+        aria-label="Espaciado de texto: desactivado">
+        <span class="aw-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M3 12h18M3 6h18M3 18h18"/>
+          </svg>
+        </span>
+        <span class="aw-name">Espaciado texto</span>
+        <span class="aw-dots" aria-hidden="true"><i></i><i></i></span>
+      </button>
+
+      <button class="aw-feat" id="awLineH" role="switch" aria-checked="false"
+        aria-label="Altura de línea: desactivada">
+        <span class="aw-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M21 10H3M21 14H3M17 6l-5-4-5 4M17 18l-5 4-5-4"/>
+          </svg>
+        </span>
+        <span class="aw-name">Altura de línea</span>
+        <span class="aw-dots" aria-hidden="true"><i></i></span>
+      </button>
+
+      <button class="aw-feat" id="awSat" role="switch" aria-checked="false"
+        aria-label="Escala de grises: desactivada">
+        <span class="aw-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor" stroke="none"/>
+          </svg>
+        </span>
+        <span class="aw-name">Sin saturación</span>
+        <span class="aw-dots" aria-hidden="true"><i></i><i></i></span>
+      </button>
+
+      <button class="aw-feat" id="awHideImg" role="switch" aria-checked="false"
+        aria-label="Ocultar imágenes: desactivado">
+        <span class="aw-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <path d="m3 9 5 5 4-4 5 5"/>
+            <line x1="3" y1="3" x2="21" y2="21"/>
+          </svg>
+        </span>
+        <span class="aw-name">Ocultar imágenes</span>
+        <span class="aw-dots" aria-hidden="true"><i></i></span>
+      </button>
+
+      <button class="aw-feat" id="awReading" role="switch" aria-checked="false"
+        aria-label="Guía de lectura: desactivada">
+        <span class="aw-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M4 6h16M4 12h10M4 18h12"/>
+            <circle cx="20" cy="12" r="2" fill="currentColor" stroke="none"/>
+          </svg>
+        </span>
+        <span class="aw-name">Guía lectura</span>
+        <span class="aw-dots" aria-hidden="true"><i></i></span>
+      </button>
+
+      <button class="aw-feat" id="awFocus" role="switch" aria-checked="false"
+        aria-label="Foco de teclado visible: desactivado">
+        <span class="aw-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <rect x="3" y="3" width="18" height="18" rx="3" stroke-dasharray="4 2"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </span>
+        <span class="aw-name">Foco teclado</span>
+        <span class="aw-dots" aria-hidden="true"><i></i></span>
+      </button>
+
+    </div><!-- /aw-grid -->
+
+    <!-- ── Botón resetear ── -->
+    <button class="aw-reset-btn" id="awReset"
+      aria-label="Restablecer todas las configuraciones de accesibilidad">
+      <svg viewBox="0 0 20 16" aria-hidden="true" fill="none"
+        stroke="currentColor" stroke-linecap="round" stroke-width="1.8">
+        <path d="M17 8a7 7 0 1 1-13.2-3.3"/>
+        <path stroke-linejoin="round" d="m5 7-2.5 1.5L1 6m13 2.9 2.4-1.6L18 9.6"/>
+      </svg>
+      Restablecer todo
+    </button>
+
+  </div><!-- /aw-body -->
+
+  <!-- Pie del panel -->
+  <div class="aw-footer" aria-hidden="true">
+    <span>ZAGREVAT · Accesibilidad WCAG 2.2 AA 🇨🇴</span>
+  </div>
+</div><!-- /aw-panel -->
+
+<!-- ══════════════════════════════════════════════════
+     SCRIPTS — orden: main → a11y-widget
+     ══════════════════════════════════════════════════ -->
 <script src="assets/js/main.js" defer></script>
+<script src="assets/js/components_menu.js" defer></script>
+<script src="assets/js/a11y-widget.js" defer></script>
 
 </body>
 </html>
