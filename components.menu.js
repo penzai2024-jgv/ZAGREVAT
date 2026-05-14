@@ -4,7 +4,7 @@ class ZagMenu extends HTMLElement {
       <div class="fixed inset-0 z-[60] bg-white flex-col p-6 hidden" data-menu-overlay>
         <div class="flex items-center justify-between mb-16">
           <div class="flex items-center gap-3">
-            <img src="./assets/Isologotipo.svg" alt="ZAGREVAT logo" class="h-8 w-8">
+            <img src="/assets/Isologotipo.svg" alt="ZAGREVAT logo" class="h-8 w-8">
             <span class="font-bold text-xl tracking-tight text-slate-900">ZAGREVAT</span>
           </div>
           <button aria-label="Cerrar menú" class="w-12 h-12 flex items-center justify-center rounded-full bg-gray-100 border border-gray-200 text-slate-900" data-menu-close>
@@ -34,7 +34,7 @@ class ZagMenu extends HTMLElement {
       <nav class="sticky top-0 bg-black/90 backdrop-blur border-b border-gray-800 z-50">
         <div class="header max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
           <div class="flex items-center gap-3">
-            <img src="./assets/Isologotipo.svg" alt="ZAGREVAT logo" class="h-8 w-8">
+            <img src="/assets/Isologotipo.svg" alt="ZAGREVAT logo" class="h-8 w-8">
             <h1 class="font-bold text-xl tracking-tight text-white">ZAGREVAT</h1>
           </div>
           <a href="#contacto" class="hidden md:inline-block text-sm font-semibold text-white hover:text-gray-300">Contáctanos</a>
